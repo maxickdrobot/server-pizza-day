@@ -22,7 +22,22 @@ const addUser = async (req, res) => {
     }
 };
 
+const renderUsers = async (req, res, next) => {
+    const users = await usersService.getUsers();
+
+    return res.render("users.pug", { users });
+};
+
+const renderUser = async (req, res, next) => {
+    const { userId } = req.params;
+    const user = await usersService.getUserById(userId);
+
+    return res.render("user.pug", { user });
+};
+
 module.exports = {
     getUserById,
     addUser,
+    renderUsers,
+    renderUser,
 };

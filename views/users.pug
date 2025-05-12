@@ -1,0 +1,21 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Users
+        link(rel="stylesheet", href="/users.css")
+
+    body 
+        div(class="container")
+            h1(class="title") Users 
+            ul(class="user-list")
+                if users
+                    each user in users 
+                        li(class="user")
+                            div= `Id: ${user.id}` 
+                            div(class="user__info")
+                                h2= `Username: ${user.name}`
+                                p= `Email: ${user.email}`
+
+

@@ -9,6 +9,21 @@ const getPizzasList = async (req, res) => {
     }
 };
 
+const renderMenu = async (req, res, next) => {
+    const menu = await menuService.getPizzasList();
+
+    return res.render("menu.ejs", { menu });
+};
+
+const renderPizza = async (req, res, next) => {
+    const { pizzaId } = req.params;
+    const pizza = await menuService.getPizzaById(pizzaId);
+
+    return res.render("pizza.ejs", { pizza });
+};
+
 module.exports = {
     getPizzasList,
+    renderMenu,
+    renderPizza,
 };
