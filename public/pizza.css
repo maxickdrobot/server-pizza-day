@@ -1,0 +1,48 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: antiquewhite;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 1440px;
+    padding: 20px;
+    min-height: 100vh;
+    margin: 0 auto;
+}
+
+.pizza {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    max-width: 250px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.pizza__price {
+    font-weight: bold;
+}
+
+
+.pizza__notice {
+    font-size: 24px;
+    font-weight: bold;
+    color: red;
+}
+
+.sold-out {
+    filter: grayscale(1);
+}

@@ -19,7 +19,12 @@ const addUser = async (userData) => {
     return newUser;
 };
 
+const getUsers = async () => {
+    return users;
+};
+
 module.exports = {
     getUserById,
     addUser,
+    getUsers,
 };

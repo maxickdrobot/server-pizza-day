@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+        <%= pizza.name %>
+    </title>
+    <link rel="stylesheet" href="/pizza.css" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="pizza ">
+            <img class="<%= pizza.soldOut ? 'sold-out' : '' %>" src="<%= pizza.imageUrl %>" alt="<%= pizza.name %>" />
+            <h1 class="pizza__title">
+                <%= pizza.name %>
+            </h1>
+            <p class="pizza__ingredients">Ingredients: <%= pizza.ingredients.join(', ') %></p>
+            <p class="pizza__price">$<%= pizza.unitPrice %></p>
+            <% if (pizza.soldOut) { %>
+                <span class="pizza__notice">Sold Out</span>
+            <% } %>
+        </div>
+  </div>
+</body>
+</html>
