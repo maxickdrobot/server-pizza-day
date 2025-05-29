@@ -7,6 +7,8 @@ const authMiddlewares = require("../../common/middleware/auth.maiddleware");
 
 router.get("/views", usersControllers.renderUsers);
 router.get("/views/:userId", usersControllers.renderUser);
+router.get("/settings/theme", usersControllers.getTheme);
+router.post("/settings/theme", [usersMiddlewares.checkThemeExist], usersControllers.setTheme);
 router.get("/:userId", [authMiddlewares.checkAuth], usersControllers.getUserById);
 
 router.post("/register", [usersMiddlewares.checkUserExistFalse], usersControllers.register);
