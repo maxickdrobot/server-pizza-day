@@ -2,8 +2,8 @@ const express = require("express");
 
 const router = express.Router();
 
-const webRouter = require("./web/index");
+const themeRouter = require("./theme/theme.router");
 
-router.use("/web", webRouter);
+router.use("/theme", themeRouter);
 
 module.exports = router;

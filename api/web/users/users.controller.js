@@ -44,14 +44,9 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-    const { email, password } = req.body;
+    const { password } = req.body;
 
-    const users = await usersService.getUsers();
-    const user = users.find((user) => user.email === email);
-
-    if (!user) {
-        return res.status(400).json({ message: "User not found" });
-    }
+    const user = req.foundUser;
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
@@ -69,14 +64,30 @@ const login = async (req, res) => {
         }
     );
 
+    res.cookie("token", token, {
+        httpOnly: true,
+        secure: false,
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+    });
     return res.json({
         message: "Login successful",
-        token,
         user: {
             id: user.id,
             name: user.name,
             email: user.email,
         },
+    });
+};
+
+const logout = (req, res) => {
+    res.clearCookie("token", {
+        httpOnly: true,
+        secure: false,
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+    });
+
+    return res.status(200).json({
+        message: "logout",
     });
 };
 
@@ -86,4 +97,5 @@ module.exports = {
     renderUser,
     register,
     login,
+    logout,
 };
