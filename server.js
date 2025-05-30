@@ -3,6 +3,9 @@ const path = require("path");
 const port = process.env.PORT || 3000;
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
+const session = require("express-session");
+const passport = require("passport");
+require("./config/passport")(passport);
 
 const indexRouter = require("./api/index");
 
@@ -14,6 +17,22 @@ app.engine("pug", require("pug").__express);
 app.engine("ejs", require("ejs").__express);
 
 app.use(cookieParser());
+
+app.use(
+    session({
+        secret: process.env.SECRET,
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            httpOnly: true,
+            secure: false,
+            maxAge: 30 * 24 * 60 * 60 * 1000,
+        },
+    })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/", express.json(), indexRouter);
 
