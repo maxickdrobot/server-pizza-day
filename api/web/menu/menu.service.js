@@ -6,12 +6,11 @@ const getPizzasList = async () => {
 };
 
 const getPizzaById = async (pizzaId) => {
-    const pizza = await Pizza.findById(pizzaId);
-
-    if (pizza) {
+    try {
+        const pizza = await Pizza.findById(pizzaId);
         return pizza;
-    } else {
-        throw new Error("Pizza not found");
+    } catch (error) {
+        throw new Error("Pizza with id: " + pizzaId + " not found");
     }
 };
 

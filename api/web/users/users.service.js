@@ -16,10 +16,14 @@ const addUser = async (userData) => {
 };
 
 const getUserByEmail = async (email) => {
-    const user = User.find({
+    const user = User.findOne({
         email,
     });
-    return user;
+    if (user) {
+        return user;
+    } else {
+        throw new Error("User not found");
+    }
 };
 
 const getUsers = async () => {
