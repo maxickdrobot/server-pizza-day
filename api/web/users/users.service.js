@@ -1,7 +1,7 @@
-const { users } = require("./mocks/users_mock");
+const User = require("../../../models/users");
 
 const getUserById = async (userId) => {
-    const user = users.find((user) => user.id == userId);
+    const user = await User.findById(userId);
     if (user) {
         return user;
     } else {
@@ -10,16 +10,24 @@ const getUserById = async (userId) => {
 };
 
 const addUser = async (userData) => {
-    const newUser = {
-        id: users.length + 1,
-        ...userData,
-    };
-
-    users.push(newUser);
+    const newUser = new User(userData);
+    await newUser.save();
     return newUser;
 };
 
+const getUserByEmail = async (email) => {
+    const user = User.findOne({
+        email,
+    });
+    if (user) {
+        return user;
+    } else {
+        throw new Error("User not found");
+    }
+};
+
 const getUsers = async () => {
+    const users = await User.find();
     return users;
 };
 
@@ -27,4 +35,5 @@ module.exports = {
     getUserById,
     addUser,
     getUsers,
+    getUserByEmail,
 };

@@ -16,10 +16,14 @@ const renderMenu = async (req, res, next) => {
 };
 
 const renderPizza = async (req, res, next) => {
-    const { pizzaId } = req.params;
-    const pizza = await menuService.getPizzaById(pizzaId);
+    try {
+        const { pizzaId } = req.params;
+        const pizza = await menuService.getPizzaById(pizzaId);
 
-    return res.render("pizza.ejs", { pizza });
+        return res.render("pizza.ejs", { pizza });
+    } catch (error) {
+        return res.status(400).json({ error: error.message });
+    }
 };
 
 module.exports = {

@@ -1,15 +1,14 @@
 const LocalStrategy = require("passport-local").Strategy;
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-
 const bcrypt = require("bcrypt");
-const { users } = require("../api/web/users/mocks/users_mock");
+const User = require("../models/users");
 
 module.exports = (passport) => {
     passport.use(
         new LocalStrategy({ usernameField: "email" }, async (email, password, done) => {
             try {
-                const user = users.find((u) => u.email === email);
-                if (!user) return done(null, false, { message: "User don't found" });
+                const user = await User.findOne({ email });
+                if (!user) return done(null, false, { message: "User not found" });
 
                 const isMatch = await bcrypt.compare(password, user.password);
                 if (!isMatch) return done(null, false, { message: "Wrong password" });
@@ -27,21 +26,25 @@ module.exports = (passport) => {
                 clientSecret: process.env.GOOGLE_CLIENT_SECRET,
                 callbackURL: "http://localhost:3000/web/users/google/callback",
             },
-            (accessToken, refreshToken, profile, done) => {
+            async (accessToken, refreshToken, profile, done) => {
                 try {
-                    let user = users.find((u) => u.email === profile.emails[0].value);
+                    const email = profile.emails?.[0]?.value;
+                    if (!email) return done(null, false, { message: "No email from Google" });
+
+                    let user = await User.findOne({ email });
+
                     if (!user) {
-                        user = {
-                            id: profile.id,
+                        user = new User({
                             name: profile.displayName,
-                            email: profile.emails[0].value,
+                            email,
                             password: null,
-                        };
-                        users.push(user);
+                        });
+                        await user.save();
                     }
+
                     return done(null, user);
                 } catch (error) {
-                    return done(err);
+                    return done(error);
                 }
             }
         )
@@ -49,13 +52,12 @@ module.exports = (passport) => {
     passport.serializeUser((user, done) => {
         done(null, user.email);
     });
-
-    passport.deserializeUser((email, done) => {
+    passport.deserializeUser(async (email, done) => {
         try {
-            const user = users.find((u) => u.email === email);
+            const user = await User.findOne({ email });
             done(null, user || false);
-        } catch (err) {
-            done(err);
+        } catch (error) {
+            done(error);
         }
     });
 };

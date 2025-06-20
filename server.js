@@ -31,6 +31,17 @@ app.use(
     })
 );
 
+const mongoose = require("mongoose");
+
+mongoose
+    .connect(process.env.MONGODB)
+    .then(() => {
+        console.log("DB is conected");
+    })
+    .catch((err) => {
+        console.error("Error", err);
+    });
+
 app.use(passport.initialize());
 app.use(passport.session());
 

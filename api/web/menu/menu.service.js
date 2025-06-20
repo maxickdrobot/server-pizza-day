@@ -1,15 +1,16 @@
-const pizzas = require("./mocks/pizzas_mock.json");
+const Pizza = require("../../../models/menu");
 
 const getPizzasList = async () => {
-    return pizzas;
+    const menu = await Pizza.find();
+    return menu;
 };
 
 const getPizzaById = async (pizzaId) => {
-    const pizza = pizzas.find((pizza) => pizza.id == pizzaId);
-    if (pizza) {
+    try {
+        const pizza = await Pizza.findById(pizzaId);
         return pizza;
-    } else {
-        throw new Error("Pizza not found");
+    } catch (error) {
+        throw new Error("Pizza with id: " + pizzaId + " not found");
     }
 };
 
