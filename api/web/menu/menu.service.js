@@ -1,11 +1,13 @@
-const pizzas = require("./mocks/pizzas_mock.json");
+const Pizza = require("../../../models/menu");
 
 const getPizzasList = async () => {
-    return pizzas;
+    const menu = await Pizza.find();
+    return menu;
 };
 
 const getPizzaById = async (pizzaId) => {
-    const pizza = pizzas.find((pizza) => pizza.id == pizzaId);
+    const pizza = await Pizza.findById(pizzaId);
+
     if (pizza) {
         return pizza;
     } else {
