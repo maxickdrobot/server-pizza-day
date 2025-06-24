@@ -23,7 +23,30 @@ const getOrdersByUserId = async (req, res) => {
     }
 };
 
+const updateOrder = async (req, res) => {
+    try {
+        const { orderId } = req.params;
+        const { newData } = req.body;
+        const updatedOrder = await orderService.updateOrder(orderId, newData);
+        return res.json(updatedOrder);
+    } catch (error) {
+        return res.status(400).json({ error: error.message });
+    }
+};
+
+const deleteOrder = async (req, res) => {
+    try {
+        const { orderId } = req.params;
+        const deletedOrder = await orderService.deleteOrder(orderId);
+        return res.json({ message: "Order deleted", order: deletedOrder });
+    } catch (error) {
+        return res.status(400).json({ error: error.message });
+    }
+};
+
 module.exports = {
     addOrder,
     getOrdersByUserId,
+    updateOrder,
+    deleteOrder,
 };
