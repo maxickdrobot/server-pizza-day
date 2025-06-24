@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Report</title>
+    <link rel="stylesheet" href="/ordersReport.css">
+</head>
+
+<body>
+
+    <h1>Order Report</h1>
+
+    <div class="section">
+        <h2>Summary</h2>
+        <p><strong>Number of unique users:</strong>
+            <%= uniqueUsers %>
+        </p>
+        <p><strong>Total number of orders:</strong>
+            <%= totalOrders %>
+        </p>
+        <p><strong>Maximum bill:</strong>
+            <%= maxCheck.toFixed(2) %> UAH
+        </p>
+        <p><strong>Minimum bill:</strong>
+            <%= minCheck.toFixed(2) %> UAH
+        </p>
+        <p><strong>Average bill:</strong>
+            <%= averageCheck.toFixed(2) %> UAH
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>Top Pizzas</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Pizza Name</th>
+                    <th>Number of Orders</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% topPizzas.forEach(pizza=> { %>
+                    <tr>
+                        <td>
+                            <%= pizza.name %>
+                        </td>
+                        <td>
+                            <%= pizza.count %>
+                        </td>
+                    </tr>
+                    <% }) %>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+
+</html>

@@ -29,6 +29,6 @@ const ordersSchema = new mongoose.Schema(
 
 ordersSchema.index({ user_id: 1 });
 
-ordersSchema.index({ createdAt: 1 }, { expireAfterSeconds: 15552000 }); // 180 days
+ordersSchema.index({ createdAt: 1 }, { expireAfterSeconds: 15552000 });
 
 module.exports = mongoose.model("Order", ordersSchema, "orders");

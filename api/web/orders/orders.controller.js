@@ -43,10 +43,19 @@ const deleteOrder = async (req, res) => {
         return res.status(400).json({ error: error.message });
     }
 };
+const showReport = async (req, res) => {
+    try {
+        const reportData = await orderService.getOrdersReport();
+        return res.render("orderReport.ejs", reportData);
+    } catch (error) {
+        return res.status(400).json({ error: error.message });
+    }
+};
 
 module.exports = {
     addOrder,
     getOrdersByUserId,
     updateOrder,
     deleteOrder,
+    showReport,
 };
