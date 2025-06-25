@@ -5,6 +5,7 @@ const orderController = require("./orders.controller");
 const orderMiddlware = require("./orders.middlware");
 
 router.post("/", orderController.addOrder);
+router.get("/report", orderController.showReport);
 router.get("/:userId", orderController.getOrdersByUserId);
 router.put("/:orderId", [orderMiddlware.checkNewData], orderController.updateOrder);
 router.delete("/:orderId", orderController.deleteOrder);
