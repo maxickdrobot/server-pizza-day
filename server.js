@@ -5,16 +5,22 @@ require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const passport = require("passport");
+const cors = require("cors");
 require("./config/passport")(passport);
 
 const indexRouter = require("./api/index");
 
 const app = express();
-
 app.use(express.static("public"));
 app.set("views", path.join(__dirname, "views"));
 app.engine("pug", require("pug").__express);
 app.engine("ejs", require("ejs").__express);
+app.use(
+    cors({
+        origin: "http://localhost:5173",
+        credentials: true,
+    })
+);
 
 app.use(cookieParser());
 
