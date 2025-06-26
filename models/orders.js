@@ -21,6 +21,10 @@ const ordersSchema = new mongoose.Schema(
             city: { type: String },
             country: { type: String },
         },
+        discountApplied: {
+            type: Boolean,
+            default: false,
+        },
     },
     {
         timestamps: true,

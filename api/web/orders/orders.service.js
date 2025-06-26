@@ -1,7 +1,19 @@
 const mongoose = require("mongoose");
 const Order = require("../../../models/orders");
 
+const isLoyalCustomer = async (userId) => {
+    const orderCount = await Order.countDocuments({ user_id: userId });
+    return orderCount >= 5;
+};
+
 const addOrder = async (orderData) => {
+    const isLoyal = await isLoyalCustomer(orderData.user_id);
+
+    if (isLoyal) {
+        orderData.total = +(orderData.total * 0.9).toFixed(2);
+        orderData.discountApplied = true;
+    }
+
     const newOrder = new Order(orderData);
     await newOrder.save();
     return newOrder;
@@ -75,6 +87,25 @@ async function getOrdersReport() {
             },
             { $sort: { count: -1 } },
         ],
+        regularClients: [
+            {
+                $group: {
+                    _id: "$user_id",
+                    ordersCount: { $sum: 1 },
+                    totalSpent: { $sum: "$total" },
+                },
+            },
+            { $match: { ordersCount: { $gte: 5 } } },
+            {
+                $project: {
+                    userId: "$_id",
+                    ordersCount: 1,
+                    totalSpent: { $round: ["$totalSpent", 2] },
+                    _id: 0,
+                },
+            },
+            { $sort: { ordersCount: -1 } },
+        ],
     });
 
     const data = report[0] || {};
@@ -86,6 +117,7 @@ async function getOrdersReport() {
         minCheck: data.totalAvrg?.[0]?.minBill || 0,
         averageCheck: data.totalAvrg?.[0]?.avgBill || 0,
         topPizzas: data.topPizzas || [],
+        regularClients: data.regularClients || [],
     };
 }
 
